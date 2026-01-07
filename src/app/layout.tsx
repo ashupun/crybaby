@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Shell from "./shell";
 
 export const metadata: Metadata = {
-  title: "Marketing Guides",
-  description: "Premium guides to master marketing",
+  title: "cryba.by",
+  description: "Your safe space to let it all out",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -13,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <Shell>{children}</Shell>
+      </body>
     </html>
   );
 }
