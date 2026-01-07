@@ -39,7 +39,7 @@ function Header() {
   return (
     <header className="relative flex items-center justify-between px-6 py-6 md:px-20 lg:px-32">
       <Link href="/" className="text-2xl font-black dark:text-white">m .</Link>
-      <nav className="absolute left-1/2 -translate-x-1/2 hidden items-center gap-14 md:flex font-sans dark:text-white">
+      <nav className="absolute left-1/2 -translate-x-1/2 hidden items-center gap-14 md:flex font-sans text-lg dark:text-white">
         {navLinks.map((link) => (
           <Link key={link} href={link === "Home" ? "/" : "#"} className="hover:opacity-70">
             {link}
@@ -89,14 +89,21 @@ function Hero() {
   );
 }
 
+const countries = ["us", "gb", "ca", "au", "de", "fr", "jp", "br", "in", "nz"];
+
 function SocialProof() {
   return (
     <section className="px-6 py-16 md:px-20 lg:px-32">
-      <div className="flex flex-wrap items-center justify-center gap-8">
+      <div className="flex flex-col items-center gap-6">
         <p className="text-xl font-semibold dark:text-white">Supporting People All Around The World</p>
         <div className="flex gap-4">
-          {[...Array(7)].map((_, i) => (
-            <div key={i} className="w-14 h-14 rounded-full bg-black/10 dark:bg-white/10 border-2 border-white dark:border-[#1a1a1a]" />
+          {countries.map((code) => (
+            <img
+              key={code}
+              src={`https://flagcdn.com/w40/${code}.png`}
+              alt={code}
+              className="w-8 h-6 object-cover rounded"
+            />
           ))}
         </div>
       </div>
@@ -112,7 +119,7 @@ function Story() {
           <div className="w-full max-w-sm mx-auto aspect-[3/4] bg-white/20 dark:bg-black/20 rounded-t-full" />
           <div>
             <p className="text-3xl md:text-4xl italic leading-relaxed">
-              I've been there too. Feeling lost, overwhelmed, and unsure where to turn.
+              Release what weighs you down. Your feelings deserve to be heard.
             </p>
             <button className="mt-8 bg-[#a8e6cf] text-[#1a1a1a] px-8 py-4 rounded-full hover:opacity-90 font-sans text-sm font-medium">
               Get Personalised Support
