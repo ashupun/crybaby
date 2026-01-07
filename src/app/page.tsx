@@ -81,7 +81,7 @@ function Hero() {
             </div>
           </div>
           <div className="flex justify-center">
-            <img src="/hero.png" alt="Mental Health Guide" className="w-full max-w-md" />
+            <img src="/cliff.png" alt="Mental Health Guide" className="w-full max-w-md" />
           </div>
         </div>
       </div>
