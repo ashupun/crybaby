@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
+import { useAudio } from "../audio";
 
 type Track = {
   id: string;
@@ -24,7 +25,7 @@ const genres: Genre[] = [
     icon: "🌧️",
     color: "#3b82f6",
     tracks: [
-      { id: "rain1", title: "Rainy London Street", artist: "Victorian Vault", url: "https://archive.org/download/VictorianStoneStreetAmbientSounds/Rainy%20Afternoon%20on%20a%20London%20Street.mp3" },
+      { id: "rain1", title: "Light Gentle Rain", artist: "Nature Sounds", url: "https://archive.org/download/relaxingrainsounds/Light%20Gentle%20Rain%20Part%201.mp3" },
       { id: "rain2", title: "Country Rain", artist: "Victorian Vault", url: "https://archive.org/download/VictorianStoneStreetAmbientSounds/Country%20Rain%20on%20a%20Spring%20Night.mp3" },
     ],
   },
@@ -81,126 +82,14 @@ const genres: Genre[] = [
 ];
 
 export default function FeelPage() {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const { currentTrack, isPlaying, isLoading, progress, duration, volume, playTrack, togglePlay, seek, setVolume } = useAudio();
   const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
-  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.7);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [isLooping, setIsLooping] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const updateProgress = () => {
-      setProgress(audio.currentTime);
-      setDuration(audio.duration || 0);
-    };
-
-    const handleEnded = () => {
-      if (isLooping) {
-        audio.currentTime = 0;
-        audio.play();
-      } else {
-        setIsPlaying(false);
-      }
-    };
-
-    const handleError = () => {
-      setError("Unable to load audio. Try another track.");
-      setIsPlaying(false);
-      setIsLoading(false);
-    };
-
-    const handleCanPlay = () => {
-      setError(null);
-      setIsLoading(false);
-    };
-
-    const handleWaiting = () => {
-      setIsLoading(true);
-    };
-
-    const handlePlaying = () => {
-      setIsLoading(false);
-    };
-
-    audio.addEventListener("timeupdate", updateProgress);
-    audio.addEventListener("loadedmetadata", updateProgress);
-    audio.addEventListener("ended", handleEnded);
-    audio.addEventListener("error", handleError);
-    audio.addEventListener("canplay", handleCanPlay);
-    audio.addEventListener("waiting", handleWaiting);
-    audio.addEventListener("playing", handlePlaying);
-
-    return () => {
-      audio.removeEventListener("timeupdate", updateProgress);
-      audio.removeEventListener("loadedmetadata", updateProgress);
-      audio.removeEventListener("ended", handleEnded);
-      audio.removeEventListener("error", handleError);
-      audio.removeEventListener("canplay", handleCanPlay);
-      audio.removeEventListener("waiting", handleWaiting);
-      audio.removeEventListener("playing", handlePlaying);
-    };
-  }, [isLooping]);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
-
-  const playTrack = (track: Track) => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    setError(null);
-
-    if (currentTrack?.id === track.id) {
-      if (isPlaying) {
-        audio.pause();
-        setIsPlaying(false);
-      } else {
-        audio.play().catch(() => setError("Unable to play audio"));
-        setIsPlaying(true);
-      }
-    } else {
-      setIsLoading(true);
-      setCurrentTrack(track);
-      audio.src = track.url;
-      audio.load();
-      audio.play().catch(() => {
-        setError("Unable to play audio");
-        setIsLoading(false);
-      });
-      setIsPlaying(true);
-    }
-  };
-
-  const togglePlay = () => {
-    const audio = audioRef.current;
-    if (!audio || !currentTrack) return;
-
-    if (isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-    } else {
-      audio.play().catch(() => setError("Unable to play audio"));
-      setIsPlaying(true);
-    }
-  };
 
   const seekTo = (e: React.MouseEvent<HTMLDivElement>) => {
-    const audio = audioRef.current;
-    if (!audio || !duration) return;
-
+    if (!duration) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const percent = (e.clientX - rect.left) / rect.width;
-    audio.currentTime = percent * duration;
+    seek(percent * duration);
   };
 
   const formatTime = (seconds: number) => {
@@ -216,8 +105,6 @@ export default function FeelPage() {
 
   return (
     <section className="h-[calc(100vh-180px)] overflow-hidden px-6 py-4 md:px-20 lg:px-32">
-      <audio ref={audioRef} loop={isLooping} crossOrigin="anonymous" />
-
       <div className="flex flex-col h-full gap-6">
         <div>
           <h1 className="write-title text-4xl md:text-5xl font-bold dark:text-white">Feel the calm</h1>
@@ -324,22 +211,9 @@ export default function FeelPage() {
                 <div className="flex items-center justify-between mb-2">
                   <div className="truncate">
                     <p className="text-lg font-medium dark:text-white truncate">{currentTrack.title}</p>
-                    {error ? (
-                      <p className="text-sm text-red-500">{error}</p>
-                    ) : (
-                      <p className="text-sm opacity-50 dark:text-white/50">{currentTrack.artist}</p>
-                    )}
+                    <p className="text-sm opacity-50 dark:text-white/50">{currentTrack.artist}</p>
                   </div>
                   <div className="flex items-center gap-4 shrink-0">
-                    <button
-                      onClick={() => setIsLooping(!isLooping)}
-                      className={`p-2 rounded-full transition-opacity ${isLooping ? "opacity-100" : "opacity-40"}`}
-                      title={isLooping ? "Loop on" : "Loop off"}
-                    >
-                      <svg className="w-5 h-5 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                      </svg>
-                    </button>
                     <div className="flex items-center gap-2 w-28">
                       <svg className="w-4 h-4 opacity-50 dark:text-white/50 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
