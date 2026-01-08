@@ -177,12 +177,6 @@ export default function DrawPage() {
           </div>
           <div className="flex items-center gap-3">
             <button
-              onClick={clearCanvas}
-              className="px-5 py-2.5 text-base rounded-full bg-black/5 dark:bg-white/10 opacity-60 hover:opacity-100 dark:text-white transition-opacity"
-            >
-              Clear
-            </button>
-            <button
               onClick={saveDrawing}
               className="save-btn bg-[#1a1a1a] dark:bg-white text-white dark:text-[#1a1a1a] px-6 py-2.5 rounded-full font-sans text-base font-medium"
             >
@@ -232,6 +226,20 @@ export default function DrawPage() {
               >
                 <svg
                   className={`w-5 h-5 ${tool === "eraser" ? "text-white dark:text-[#1a1a1a]" : "dark:text-white"}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15.414l8.828-8.828a2 2 0 012.828 0l1.172 1.172a2 2 0 010 2.828l-8.828 8.828a2 2 0 01-1.414.586H4v-3.172a2 2 0 01.586-1.414z" /><path strokeLinecap="round" strokeLinejoin="round" d="M4 21h16" />
+                </svg>
+              </button>
+              <button
+                onClick={clearCanvas}
+                className="w-10 h-10 mx-auto rounded-full flex items-center justify-center transition-all bg-black/5 dark:bg-white/10 hover:bg-red-500/20"
+              >
+                <svg
+                  className="w-5 h-5 dark:text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
