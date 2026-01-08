@@ -41,22 +41,28 @@ function ThemeToggle() {
 
 export default function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <main className="h-screen overflow-hidden flex flex-col">
-      <header className="flex items-center justify-between px-6 py-4 md:px-20 lg:px-32">
+    <main className="min-h-screen flex flex-col">
+      <header className="flex items-center justify-between px-6 py-6 md:px-20 lg:px-32">
         <Link href="/" className="text-3xl font-black dark:text-white" style={{ WebkitTextStroke: "1px currentColor" }}>C .</Link>
-        <nav className="flex items-center gap-6 text-base font-sans dark:text-white">
+        <nav className="flex items-center gap-8 text-lg font-sans dark:text-white">
           <Link href="/" className="hover:opacity-70">Home</Link>
           <Link href="/app" className="hover:opacity-70">Write</Link>
+          <Link href="/draw" className="hover:opacity-70">Draw</Link>
+          <Link href="/feel" className="hover:opacity-70">Feel</Link>
         </nav>
         <ThemeToggle />
       </header>
-      <div className="flex-1 overflow-hidden content-fade">
+      <div className="flex-1 content-fade">
         {children}
       </div>
-      <footer className="px-6 py-4 md:px-20 lg:px-32">
-        <div className="flex items-center justify-between border-t border-black/10 dark:border-white/10 pt-4">
-          <Link href="/" className="text-base font-black dark:text-white">cryba.by</Link>
-          <p className="text-base opacity-50 dark:text-white">your feelings are valid</p>
+      <footer className="px-6 py-10 md:px-20 lg:px-32 border-t border-black/5 dark:border-white/5">
+        <div className="flex flex-col gap-6">
+          <Link href="/" className="text-xl font-black tracking-tight dark:text-white">Cryba.by</Link>
+          <nav className="flex flex-wrap items-center gap-x-8 gap-y-2 text-base font-sans opacity-50 dark:text-white">
+            <Link href="/privacy" className="hover:opacity-100">Privacy Policy</Link>
+            <Link href="/terms" className="hover:opacity-100">Terms and Conditions</Link>
+            <Link href="/contact" className="hover:opacity-100">Contact</Link>
+          </nav>
         </div>
       </footer>
     </main>

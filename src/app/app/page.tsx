@@ -116,18 +116,18 @@ export default function WritePage() {
   const monthName = calendarDate.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
   return (
-    <section className="h-full overflow-hidden px-6 py-4 md:px-20 lg:px-32">
+    <section className="h-[calc(100vh-180px)] overflow-hidden px-6 py-4 md:px-20 lg:px-32">
       <div className="grid md:grid-cols-2 gap-8 md:gap-12 h-full">
         <div>
-          <h1 className="text-3xl font-bold mb-8 dark:text-white">Write it out</h1>
-          <div className="bg-[#f3f0e9] dark:bg-[#2a2a2a] rounded-2xl p-6">
+          <h1 className="write-title text-4xl md:text-5xl font-bold mb-8 dark:text-white">Write it out</h1>
+          <div className="write-form bg-[#faf9f7] dark:bg-[#222] rounded-2xl p-6 border border-black/5 dark:border-white/5">
             <div className="bg-white dark:bg-[#1a1a1a] rounded-xl overflow-hidden">
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); document.getElementById("entry-text")?.focus(); } }}
                 placeholder="Title"
-                className="w-full px-4 py-3 outline-none dark:text-white font-medium bg-transparent"
+                className="w-full px-5 py-4 outline-none dark:text-white text-lg font-medium bg-transparent"
               />
               <div className="border-t border-black/5 dark:border-white/10" />
               <textarea
@@ -135,7 +135,7 @@ export default function WritePage() {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="What's on your mind?"
-                className="w-full h-48 p-4 resize-none outline-none dark:text-white bg-transparent"
+                className="w-full h-48 p-5 resize-none outline-none dark:text-white text-base leading-relaxed bg-transparent"
               />
             </div>
             <div ref={moodAreaRef} className="mt-4 flex items-center justify-between">
@@ -166,7 +166,7 @@ export default function WritePage() {
               </div>
               <button
                 onClick={(e) => { e.stopPropagation(); saveEntry(); }}
-                className="bg-[#1a1a1a] dark:bg-white text-white dark:text-[#1a1a1a] px-6 py-3 rounded-full hover:opacity-90 font-sans text-sm font-medium"
+                className="save-btn bg-[#1a1a1a] dark:bg-white text-white dark:text-[#1a1a1a] px-8 py-3 rounded-full font-sans text-base font-medium"
               >
                 Save
               </button>
@@ -175,18 +175,18 @@ export default function WritePage() {
         </div>
 
         <div className="flex flex-col h-full overflow-hidden">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-3xl font-bold dark:text-white">Your entries</h2>
-            <div className="flex gap-1 bg-[#f3f0e9] dark:bg-[#2a2a2a] rounded-full p-1">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="entries-title text-4xl md:text-5xl font-bold dark:text-white">Your entries</h2>
+            <div className="entries-toggle flex gap-1 bg-[#faf9f7] dark:bg-[#222] rounded-full p-1.5 border border-black/5 dark:border-white/5">
               <button
                 onClick={() => setView("list")}
-                className={`px-3 py-1 text-sm rounded-full ${view === "list" ? "bg-white dark:bg-[#1a1a1a] dark:text-white" : "opacity-50 dark:text-white"}`}
+                className={`px-4 py-1.5 text-base rounded-full ${view === "list" ? "bg-white dark:bg-[#1a1a1a] dark:text-white" : "opacity-50 dark:text-white"}`}
               >
                 List
               </button>
               <button
                 onClick={() => setView("calendar")}
-                className={`px-3 py-1 text-sm rounded-full ${view === "calendar" ? "bg-white dark:bg-[#1a1a1a] dark:text-white" : "opacity-50 dark:text-white"}`}
+                className={`px-4 py-1.5 text-base rounded-full ${view === "calendar" ? "bg-white dark:bg-[#1a1a1a] dark:text-white" : "opacity-50 dark:text-white"}`}
               >
                 Calendar
               </button>
@@ -195,112 +195,112 @@ export default function WritePage() {
 
           {view === "list" ? (
             entries.length > 0 ? (
-              <div className="space-y-3 flex-1 overflow-auto">
-                {entries.map((entry) => (
-                  <div key={entry.id}>
+              <div className="entries-container space-y-3 flex-1 overflow-auto">
+                {entries.map((entry, index) => (
+                  <div key={entry.id} style={{ animationDelay: `${index * 0.05}s` }}>
                     <div
                       onClick={() => { setExpanded(expanded === entry.id ? null : entry.id); setDeleteId(null); }}
-                      className="bg-[#f3f0e9] dark:bg-[#2a2a2a] rounded-2xl p-4 cursor-pointer flex items-center justify-between"
+                      className="entry-card bg-[#faf9f7] dark:bg-[#222] rounded-2xl p-5 cursor-pointer flex items-center justify-between border border-black/5 dark:border-white/5"
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="text-xl">{entry.mood}</span>
-                        <span className="font-medium dark:text-white">{entry.title}</span>
-                        <span className="text-sm opacity-40 dark:text-white">{formatDate(entry.createdAt)}</span>
+                      <div className="flex items-center gap-4">
+                        <span className="text-2xl">{entry.mood}</span>
+                        <span className="text-lg font-medium dark:text-white">{entry.title}</span>
+                        <span className="text-base opacity-40 dark:text-white">{formatDate(entry.createdAt)}</span>
                       </div>
                       {deleteId === entry.id ? (
                         <button
                           onClick={(e) => { e.stopPropagation(); confirmDelete(entry.id); }}
-                          className="text-sm px-3 py-1 bg-red-500 text-white rounded-full hover:bg-red-600"
+                          className="text-base px-5 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 font-medium"
                         >
-                          confirm
+                          Confirm
                         </button>
                       ) : (
                         <button
                           onClick={(e) => { e.stopPropagation(); setDeleteId(entry.id); }}
-                          className="text-sm px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 opacity-60 hover:opacity-100 dark:text-white"
+                          className="text-base px-5 py-2 rounded-full bg-black/5 dark:bg-white/10 opacity-60 hover:opacity-100 dark:text-white"
                         >
-                          delete
+                          Delete
                         </button>
                       )}
                     </div>
                     {expanded === entry.id && (
-                      <div className="bg-[#e8e5de] dark:bg-[#222] rounded-b-2xl -mt-2 pt-6 pb-4 px-4">
-                        <p className="dark:text-white whitespace-pre-wrap">{entry.text}</p>
+                      <div className="entry-expanded bg-[#f0ede6] dark:bg-[#1a1a1a] rounded-b-2xl -mt-2 pt-6 pb-5 px-5">
+                        <p className="dark:text-white text-base leading-relaxed whitespace-pre-wrap">{entry.text}</p>
                       </div>
                     )}
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="flex-1 flex items-center justify-center opacity-40 dark:text-white">
+              <div className="entries-container flex-1 flex items-center justify-center text-lg opacity-40 dark:text-white">
                 No entries yet
               </div>
             )
           ) : expanded?.startsWith("day-") ? (
-            <div className="bg-[#f3f0e9] dark:bg-[#2a2a2a] rounded-2xl p-4 flex-1 overflow-auto">
-              <div className="flex items-center gap-3 mb-4">
+            <div className="entries-container bg-[#faf9f7] dark:bg-[#222] rounded-2xl p-5 flex-1 overflow-auto border border-black/5 dark:border-white/5">
+              <div className="flex items-center gap-4 mb-6">
                 <button
                   onClick={() => setExpanded(null)}
-                  className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full dark:text-white"
+                  className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full dark:text-white text-lg"
                 >
                   ←
                 </button>
-                <span className="font-medium dark:text-white">
+                <span className="text-lg font-medium dark:text-white">
                   {new Date(calendarDate.getFullYear(), calendarDate.getMonth(), parseInt(expanded.replace("day-", ""))).toLocaleDateString("en-US", { month: "long", day: "numeric" })}
                 </span>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {getEntriesForDay(parseInt(expanded.replace("day-", ""))).map((entry) => (
-                  <div key={entry.id} className="bg-white dark:bg-[#1a1a1a] rounded-xl p-4">
+                  <div key={entry.id} className="bg-white dark:bg-[#1a1a1a] rounded-xl p-5">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <span className="text-xl">{entry.mood}</span>
-                        <span className="font-medium dark:text-white">{entry.title}</span>
+                      <div className="flex items-center gap-4">
+                        <span className="text-2xl">{entry.mood}</span>
+                        <span className="text-lg font-medium dark:text-white">{entry.title}</span>
                       </div>
                       {deleteId === entry.id ? (
                         <button
                           onClick={(e) => { e.stopPropagation(); confirmDelete(entry.id); }}
-                          className="text-sm px-3 py-1 bg-red-500 text-white rounded-full hover:bg-red-600"
+                          className="text-base px-5 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 font-medium"
                         >
-                          confirm
+                          Confirm
                         </button>
                       ) : (
                         <button
                           onClick={(e) => { e.stopPropagation(); setDeleteId(entry.id); }}
-                          className="text-sm px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 opacity-60 hover:opacity-100 dark:text-white"
+                          className="text-base px-5 py-2 rounded-full bg-black/5 dark:bg-white/10 opacity-60 hover:opacity-100 dark:text-white"
                         >
-                          delete
+                          Delete
                         </button>
                       )}
                     </div>
-                    <p className="mt-3 dark:text-white/70 whitespace-pre-wrap">{entry.text}</p>
+                    <p className="mt-4 text-base leading-relaxed dark:text-white/70 whitespace-pre-wrap">{entry.text}</p>
                   </div>
                 ))}
               </div>
             </div>
           ) : (
-            <div className="bg-[#f3f0e9] dark:bg-[#2a2a2a] rounded-2xl p-4 flex-1 overflow-auto">
-              <div className="flex items-center justify-between mb-4">
+            <div className="entries-container bg-[#faf9f7] dark:bg-[#222] rounded-2xl p-5 flex-1 overflow-auto border border-black/5 dark:border-white/5">
+              <div className="flex items-center justify-between mb-6">
                 <button
                   onClick={() => setCalendarDate(new Date(calendarDate.getFullYear(), calendarDate.getMonth() - 1))}
-                  className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full dark:text-white"
+                  className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full dark:text-white text-lg transition-transform active:scale-90"
                 >
                   ←
                 </button>
-                <span className="font-medium dark:text-white">{monthName}</span>
+                <span className="text-lg font-medium dark:text-white">{monthName}</span>
                 <button
                   onClick={() => setCalendarDate(new Date(calendarDate.getFullYear(), calendarDate.getMonth() + 1))}
-                  className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full dark:text-white"
+                  className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full dark:text-white text-lg transition-transform active:scale-90"
                 >
                   →
                 </button>
               </div>
-              <div className="grid grid-cols-7 gap-1 text-center text-sm mb-2">
+              <div className="calendar-grid grid grid-cols-7 gap-1 text-center text-base mb-3">
                 {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
                   <div key={i} className="opacity-40 dark:text-white">{d}</div>
                 ))}
               </div>
-              <div className="grid grid-cols-7 gap-1">
+              <div className="calendar-grid grid grid-cols-7 gap-1">
                 {Array.from({ length: getDaysInMonth(calendarDate).firstDay }).map((_, i) => (
                   <div key={`empty-${i}`} />
                 ))}
@@ -310,14 +310,14 @@ export default function WritePage() {
                   return (
                     <div
                       key={day}
-                      className="aspect-square flex flex-col items-center justify-center rounded-lg text-sm dark:text-white hover:bg-black/5 dark:hover:bg-white/10 cursor-pointer"
+                      className="calendar-day aspect-square flex flex-col items-center justify-center rounded-lg text-base dark:text-white hover:bg-black/5 dark:hover:bg-white/10 cursor-pointer"
                       onClick={() => dayEntries.length > 0 && setExpanded(`day-${day}`)}
                     >
                       <span>{day}</span>
                       {dayEntries.length > 0 && (
                         <div className="flex gap-0.5 mt-0.5">
                           {dayEntries.slice(0, 3).map((e) => (
-                            <span key={e.id} className="text-xs">{e.mood}</span>
+                            <span key={e.id} className="text-sm">{e.mood}</span>
                           ))}
                         </div>
                       )}

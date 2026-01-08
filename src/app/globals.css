@@ -7,6 +7,7 @@ body {
   background: #ffffff;
   font-family: 'Recoleta', serif;
   transition: background-color 0.3s;
+  font-variant-ligatures: none;
 }
 
 html.dark body {
@@ -60,6 +61,132 @@ html.dark ::-webkit-scrollbar-thumb:hover {
   animation: fadeIn 0.3s ease-out;
 }
 
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeScale {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes stagger1 {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.hero-card {
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-title {
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+}
+
+.hero-subtitle {
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+
+.hero-cta {
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
+}
+
+.hero-feature {
+  opacity: 0;
+  animation: stagger1 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-feature:nth-child(1) { animation-delay: 0.6s; }
+.hero-feature:nth-child(2) { animation-delay: 0.7s; }
+.hero-feature:nth-child(3) { animation-delay: 0.8s; }
+
+.hero-image {
+  opacity: 0;
+  animation: fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+
+.hero-image img {
+  animation: float 8s ease-in-out infinite;
+}
+
+.hero-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.1);
+}
+
+.dark .hero-cta:hover {
+  box-shadow: 0 4px 16px -4px rgba(255, 255, 255, 0.08);
+}
+
+.features-section {
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+}
+
+.features-title {
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.features-subtitle {
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+.feature-card {
+  opacity: 0;
+  animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark .feature-card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.steps-section {
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
+}
+
+.step-card {
+  opacity: 0;
+  animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark .step-card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.quote-section {
+  opacity: 0;
+  animation: fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+}
+
 @keyframes slideRight {
   from { opacity: 0; transform: scaleX(0); }
   to { opacity: 1; transform: scaleX(1); }
@@ -78,4 +205,79 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 .slide-left {
   animation: slideLeft 0.15s ease-out forwards;
   transform-origin: left center;
+}
+
+.write-title {
+  opacity: 0;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.write-form {
+  opacity: 0;
+  animation: fadeScale 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+
+.entries-title {
+  opacity: 0;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+.entries-toggle {
+  opacity: 0;
+  animation: fadeScale 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+.entries-container {
+  opacity: 0;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+}
+
+@keyframes entrySlide {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.entry-card {
+  animation: entrySlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.entry-card:hover {
+  transform: translateY(-2px);
+}
+
+@keyframes expandDown {
+  from { opacity: 0; max-height: 0; }
+  to { opacity: 1; max-height: 500px; }
+}
+
+.entry-expanded {
+  animation: expandDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  overflow: hidden;
+}
+
+.calendar-grid {
+  opacity: 0;
+  animation: fadeScale 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.calendar-day {
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.calendar-day:hover {
+  transform: scale(1.05);
+}
+
+.save-btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.25);
+}
+
+.dark .save-btn:hover {
+  box-shadow: 0 6px 20px -6px rgba(255, 255, 255, 0.15);
 }
